@@ -37,44 +37,32 @@ public class CharCnt {
  * Enter a character to count: r
  * The character 'r' occurs 1 times in the string.
  * -----------------------------------------------------------------------------
- * -----------------------------------------------------------------------------
- * ----------
+ * 
  * 🌟 Suggested Improvements
- * 1. Case-insensitive
- * counting---------------------------------------------------------
+ * 1. Case-insensitive counting---------------------------
+ * If you want 'R' and 'r' to be treated the same:
  * 
+ * if (Character.toLowerCase(str.charAt(i)) ==
+ * Character.toLowerCase(charToCount)) {
+ * count++;
+ * }
+ * 2. Handle empty string safely------------------------------
  * 
+ * Add a simple validation:
  * 
- * 
- * Characte
- *  
- * 
- * 
- * 
- * 2. Handle empty string s
- * 
- * Add a simple validat
- * 
- * str.isE
- *  
- * 
+ * if (str.isEmpty()) {
+ * System.out.println("String is empty!");
+ * return;
  * }
  * 
- * 
- * 3. Use modern Java streams (optional, for learning)------------
+ * 3. Use modern Java streams (optional, for learning)--------------------------
  * In Java 8+, you can count using streams:
+ * long count = str.chars().filter(c -> c == charToCount).count();
  * 
- * This produces th
- *  same result with a more functional style.
+ * This produces the same result with a more functional style.
  * 
- * 
- * 4. Sample Output Variations-----------------------------------------------
- * -----------------------
- * 
- * 
- * 
- * 
- * Example Output:
- * The character 'r' occurs 1 time in the string.
- The character 'a' occurs 3 times in the string.
-*/
+ * 4. Sample Output Variations-----------------------------
+ * You can make the message grammatically correct:
+ * System.out.println("The character '" + charToCount + "' occurs " + count +
+ * (count == 1 ? " time" : " times") + " in the string.");
+ */
