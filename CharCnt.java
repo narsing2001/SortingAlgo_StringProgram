@@ -42,14 +42,12 @@ public class CharCnt {
  * 1. Case-insensitive counting---------------------------
  * If you want 'R' and 'r' to be treated the same:
  * 
- * if (Character.toLowerCase(str.charAt(i)) ==
- * Character.toLowerCase(charToCount)) {
+ * if (Character.toLowerCase(str.charAt(i))
+ * ==Character.toLowerCase(charToCount)) {
  * count++;
  * }
  * 2. Handle empty string safely------------------------------
- * 
  * Add a simple validation:
- * 
  * if (str.isEmpty()) {
  * System.out.println("String is empty!");
  * return;
@@ -58,11 +56,10 @@ public class CharCnt {
  * 3. Use modern Java streams (optional, for learning)--------------------------
  * In Java 8+, you can count using streams:
  * long count = str.chars().filter(c -> c == charToCount).count();
- * 
  * This produces the same result with a more functional style.
  * 
  * 4. Sample Output Variations-----------------------------
  * You can make the message grammatically correct:
- * System.out.println("The character '" + charToCount + "' occurs " + count +
- * (count == 1 ? " time" : " times") + " in the string.");
+ * System.out.println("The character '" + charToCount + "' occurs " + count
+ * +(count == 1 ? " time" : " times") + " in the string.");
  */

@@ -1,0 +1,310 @@
+Q1.What is the String in the java 
+-----------------------------------
+Defination:a String is an object that represent sequence of the character enclosed in double quotes  to represent textual data such as letters, numbers , or symbol
+--------------------
+-java does not treat string as a primitive data type like int or character
+-string object are object of the string class which is part of the java.lang package
+-string class is final class meaning it cannot be subclassed
+-string class is designed immutable which means once a string object is created, its value is cannot be changed
+-string immutable property helps and ensure that the string operations are predictable and thread-safe
+-immutability of string means that even though you can perform operations like concatenation, or modification
+the result of these operation is a new String, the original string remains unchanged
+--------------------------------------------------------------------------------------------
+Q2.Difference between primitive Types and objects
+----------------
+1.Primitive types(includes int, float,char,boolean)
+........
+I)
+-simple data types that holds raw values e.g an int holds a number, a char holds a single character)
+-stored directly in memory as the value itself
+-not part of any class and they do not have methods
+---------------------------------------
+2.References types (which include objects)
+..........
+II)objects, on the other hand are instance of the  classes like String, and hold a references( or pointer)
+to a memory location where the object data is stored
+
+-when you declare an object you are actually creating a reference to that  object in memory,
+not storing the object itself
+
+-object is complex data structures that contain methods and properties
+-Accessed by references, meaning the variable holds the address where the object resides, not the object's actual content
+-provides various methods to manipulates the data within them
+--------------------------------------------------------------------------------------------------------
+Q3.Differences Between Primitive Types and Strings (Objects)
+----------------------
+|   Feature             |   Primitive Types                          |   Objects (e.g., String)                       |
+| --------------------- | ------------------------------------------ | ---------------------------------------------- |
+|   Storage             | Store actual value directly                | Store reference to memory location             |
+|   Memory Allocation   | Allocated on stack                         | Allocated on heap (reference stored on stack)  |
+|   Methods             | No methods associated                      | Have methods (e.g., `length()`, `substring()`) |
+|   Immutability        | N/A (Values can change)                    | Strings are immutable                          |
+|   Default Value       | e.g., `0` for `int`, `false` for `boolean` | `null` for reference types                     |
+|   Comparison          | Compared using `==`                        | Compared using `.equals()` for content         |
+|---------------------------------------------------------------------------------------------------------------------|
+==============================================================================
+Q4.How to create String in java
+------
+-string in java are sequence of character, unlike primitive data type string are objects
+this means that they have method asscociated with them that can be used to manipulate and process the string data
+for example: "100"(with quotes) is consider as the string, while 100(without quotes) is consider a number or falls under the Interger type
+
+-in java string are represented by String class, part of java.lang package automatically imported
+and widely used in java programming to store and manipulate tectual data
+..............
+=>there are mainly two ways to create string in java
+---
+1.By String literals
+-----
+I).java String literal is created by using double quotes. 
+for example: 
+String str="Hello Narsing";
+.......................................................................... 
+
+2.By String constructor
+------
+I).Using a double-Quoted text with a String Constructor.
+for example: 
+String str=new String("hi Narsing");
+.....................................................................
+II)Using char[] array of characters
+-----
+char [] charArray={'H','e','l','l','o',' ','w','o','r','l','d','!'};
+String str=new String(charArray); //Hello world!
+---------
+III)String pool
+==> 
+-java uses a special memory in Heap called a String pool(or String Intern pool) to store string literals
+-when you create a string literals, the JVM checks if that literals already exists in the pool
+if it does, it returns a reference to the existing object, if not it adds the new literal to the pool
+-however when using the new keyword, the string is created in the heap memory (outside the pool), even if the exact string literal exists in the pool
+---------
+How it works:
+.................
+1.When you create a string literal, e.g.,
+String s1 = "Hello";
+==>
+the JVM checks if the literal "Hello" already exists in the String Pool.
+If it exists, it returns a reference to the existing object.
+If it does not exist, it creates a new String object in the pool.
+
+2.Using new keyword:
+==>
+When you create a string using the new keyword, e.g.,
+String s2 = new String("Hello");
+a new object is created in the heap memory (outside the pool),
+even if "Hello" already exists in the String Pool.
+
+Example:
+String s1 = "Java";
+String s2 = "Java";
+String s3 = new String("Java");
+
+System.out.println(s1 == s2); // true  → both refer to the same object in the pool
+System.out.println(s1 == s3); // false → s3 refers to a new object in the heap
+=========================================================
+Q5.what is String Interning?
+==>
+-String interning is the process of storing only one copy of each distinct string value in the String pool
+I) when you create a string literal, java automatically interns it - meaning it's placed in the string pool,
+if it's not already there
+
+II)when you create a new string object (using new),it's stored outside the pool, but inside the Heap memory
+but we can manually add it to the pool using the .intern() method
+-------
+⚙️ How .intern() Works::
+========================
+The intern() method ensures that a string reference points to the unique instance from the String Pool.
+
+Example:
+String s1 = "Hello";
+String s2 = new String("Hello");
+String s3 = s2.intern();
+
+System.out.println(s1 == s2); // false → different memory locations
+System.out.println(s1 == s3); // true  → both refer to the same pooled object
+
+
+s1 → points to the String Pool
+s2 → a new object in heap
+s3 → after intern(), it points to the same pooled "Hello" as s1
+
+🏁 Why Interning is Useful
+
+Saves memory: Only one copy of each string literal is stored.
+Improves performance: String comparisons using == can be faster for interned strings.
+Consistency: Helps manage and reuse common string literals.
+----------------------
+Q6)Immutability in String
+....
+=> Defination:: String are Immutable which means once a string object is created its value cannot be changed
+----
+-if you modify a string (for example by concatenation, replacement, or substring operations),a new String object is created in memory - the original string remains unchanged
+
+
+🧩 Example of Immutability
+String original = "Hello";
+String modified = original.concat(", World!");
+
+System.out.println(original); // Output: Hello
+System.out.println(modified); // Output: Hello, World!
+
+
+Explanation:
+original points to the string "Hello".
+original.concat(", World!") creates a new string object with the value "Hello, World!".
+The reference modified points to this new object.
+The original string ("Hello") remains unchanged.
+
+⚙️ Why Strings Are Immutable
+Security: Prevents unauthorized modification (e.g., in class loading, URLs, or network connections).
+Thread-safety: Multiple threads can safely share the same string without synchronization.
+Caching and Reuse: Enables efficient reuse through the String Pool.
+------------------------------------------------------------------------------------
+
+Q7).Steps to Create an Immutable Class/Rules for the Immutability
+...........
+1.Declare the class as final (Prevents subclassing)
+→ This prevents other classes from extending it and possibly adding mutable behavior.
+
+2.Make all fields private and final (Prevents reassignment)
+→ So fields can’t be modified after the object is created.
+
+3.Don’t provide setters (Disallows changing values)
+→ Provide only getters (read-only access).
+
+4.Initialize all fields in the constructor (Values set only once)
+→ Assign all values only once, during object creation.
+
+5.Defensive copies for mutable fields/If a field is mutable (like a Date, List, etc.), perform deep copies(Prevents indirect modification)
+→ Return a copy of the object in getters and store a copy in the constructor to prevent external modification.
+--------------------------------------------------------------------------------
+
+🧩 Example: Immutable Class
+public final class Person {
+    private final String name;
+    private final int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Only getters, no setters
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+✅ Result:
+Once a Person object is created, you can’t change its name or age.
+
+⚙️ Example with a Mutable Field
+If your class has a mutable object (like Date), you must make defensive copies:
+
+import java.util.Date;
+public final class Employee {
+    private final String name;
+    private final Date joiningDate;
+
+    public Employee(String name, Date joiningDate) {
+        this.name = name;
+        // Defensive copy
+        this.joiningDate = new Date(joiningDate.getTime());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Date getJoiningDate() {
+        // Return a copy to prevent external modification
+        return new Date(joiningDate.getTime());
+    }
+}
+✅ This ensures that even if someone modifies the Date object they pass in or get back,
+it won’t affect the internal state of the Employee object.
+===================================================================
+Q8). What is String Pool in Java
+------------>
+1.java string pool is memory optimization technique where JVM stores string literals in heap memory for efficient reuse
+-the key difference of literals vs new keyword is performance benifits and memory management from java 7 onwards
+
+2.String pool (also known as the String Intern pool) is a special memory area in the java heap where string literals are stored to optimize memory usage
+-Note: only String literals are stored in String pool
+-when a string id created in java, especially through literals, Java Virtual Machine(JVM) uses the String Pool to reduce 
+memory overhead by reusing existing string instead of creating new ones 
+-----------------------------------
+Q9).String pool before and after Java 7
+---->
+I).Before Java 7 (in JDK 6 and earlier)
+--> the string pool was part of the PermGen(Permanent Generation) space, a fixed-size memory area
+-this limited the size of the pool and large number of string could result in an OutOfMemoryError
+
+II)From Java 7 onward:
+--> the string pool was moved to the heap memory, making it more flexible in size and less prone to memory errors
+-----------------------------------
+Key benefits::
+-------------
+1.Memory Efficiency: java Conserve memory by reusing strings especially when dealing with large number of string literals
+for Example:if we uses "Hello" in multiple places in your code, instead of creating multiple "Hello" objects in memory,
+the JVM will only store one instance in the String pool and refer to it multiple times
+
+2.Performance Optimization:since String are Immutable, sharing references to the same string object does not pose a risk of accidental modification
+-therefore the string pool helps improve memory usage and performance by avoiding duplicate string object
+
+Important Points to Remember:
+=>
+1.Strings created with string literals are automatically added to the String Pool.
+2.Strings created with the new keyword are stored in the heap, but they can be manually added to the pool using intern().
+3.The String Pool is designed for optimization and memory efficiency in Java, particularly when working with a large number of string literals.
+
+The Java String Pool is a crucial memory optimization technique that reduces redundancy and improves performance 
+by ensuring that identical string literals share the same memory space. 
+==================================================================================================================================================================
+
+🔹 1. trim() Method
+--------
+Introduced in: Java 1.0
+Purpose: Removes leading and trailing whitespace characters.
+Limitation: Works only on characters with Unicode value ≤ U+0020 (the standard ASCII whitespace like space, tab, newline).
+Does not remove: Non-breaking spaces (\u00A0), Unicode spaces, etc.
+
+Example:
+String str = "  Hello World!  ";
+System.out.println(str.trim()); 
+// Output: "Hello World!"
+
+But:
+String str = "\u2005Hello\u2005"; // contains Unicode space (U+2005)
+System.out.println(str.trim()); 
+// Output: " Hello "  (Unicode spaces remain)
+-------------------------------------------------------------------------------
+🔹 2. strip() Method
+------------------
+Introduced in: Java 11
+Purpose: Removes all types of whitespace, including Unicode spaces.
+Uses: Unicode-aware Character.isWhitespace() to identify whitespace characters.
+
+Example:
+String str = "\u2005Hello\u2005"; // Unicode space
+System.out.println(str.strip()); 
+// Output: "Hello"  (Unicode spaces removed)
+
+🧩 Comparison Table
+| Feature               | `trim()`                    | `strip()`                                      |
+| --------------------- | --------------------------- | ---------------------------------------------- |
+|   Introduced in       | Java 1.0                    | Java 11                                        |
+|   Removes             | ASCII whitespace (≤ U+0020) | All Unicode whitespace                         |
+|   Unicode support     | ❌ No                       | ✅ Yes                                          |
+|   Methods available   | Only `trim()`               | `strip()`, `stripLeading()`, `stripTrailing()` |
+|   Example Input       | `" Hello "` (Unicode space) | `" Hello "` (Unicode space)                    |
+|   Result              | `" Hello "` (unchanged)     | `"Hello"`                                      |
+
+⚙️ Summary
+Use trim() for simple, old-style ASCII whitespace removal (legacy code).
+Use strip() for modern applications where Unicode whitespace might appear (e.g., user input, international text).
+
