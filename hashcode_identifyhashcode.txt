@@ -1,0 +1,203 @@
+🔹 1. hashCode()
+----------------------------------------------
+Defined in: java.lang.Object (and can be overridden)
+➤ Meaning: Represents a logical hash code of an object.
+
+It is meant to be overridden in classes that want to define equality based on content rather than reference (for example, String, Integer, or any custom class overriding equals()).
+
+➤ Behavior:
+
+By default, Object.hashCode() returns a value derived from the object’s memory address.
+But if a class overrides it (like String, Integer, HashMap, etc.), the result depends on the object’s data/content, not its memory address.
+
+➤ Example:
+String s1 = new String("Hello");
+String s2 = new String("Hello");
+
+System.out.println(s1.hashCode()); // same (content-based)
+System.out.println(s2.hashCode()); // same
+
+
+Even though s1 and s2 are different objects, they produce the same hash code because String overrides hashCode() based on content.
+
+🔹 2. System.identityHashCode(Object obj)
+-------------------------------------------------
+Defined in: java.lang.System
+
+➤ Meaning:
+Returns the original, identity-based hash code of the object — the same as what Object.hashCode() would return if it hadn’t been overridden.
+This cannot be overridden. It always reflects the object’s identity (often linked to memory address).
+
+➤ Behavior:
+Ignores any hashCode() override.
+Useful when you need to distinguish objects by reference, not content (e.g., when debugging identity issues).
+
+➤ Example:
+String s1 = new String("Hello");
+String s2 = new String("Hello");
+
+System.out.println(s1.hashCode());                // same (content-based)
+System.out.println(s2.hashCode());                // same
+System.out.println(System.identityHashCode(s1));  // different (based on object identity)
+System.out.println(System.identityHashCode(s2));  // different
+
+🔸 Summary Table
+Feature             	                 hashCode()	                            System.identityHashCode(obj)
+--------------------------------------------------------------------------------------------------------------------
+Can be overridden	                     ✅ Yes	                                ❌ No
+Based on	                             Logical (content)	                    Physical (object identity)
+Used in	Hash-based collections (e.g.     HashMap, HashSet)	                    When you need identity-based distinction
+Returns same value for equal objects?	 Usually yes (if overridden properly)	Not necessarily
+
+------------------------------------------------------------------------------------------------------------
+✅ When to Use Each
+hashCode() → normal use in collections, equality checks, etc.
+System.identityHashCode() → when debugging, or when working with identity-sensitive logic (e.g., using IdentityHashMap).
+------------------------------------------------------------------------------------------------------------------------
+Excellent — this is a very common Java interview topic, and interviewers often test whether you understand the difference between logical equality (equals() and hashCode()) 
+vs object identity (== and System.identityHashCode()).
+
+Let’s go through a complete example with code, explanation, and how you can confidently answer it in an interview 👇
+
+💡 Interview Question
+=>
+Q1: What’s the difference between hashCode() and System.identityHashCode() in Java?
+Can you show it with an example?
+
+🧩 Example Code
+public class HashCodeExample {
+    public static void main(String[] args) {
+        String s1 = new String("Java");
+        String s2 = new String("Java");
+
+        System.out.println("s1.equals(s2): " + s1.equals(s2));
+        System.out.println("s1 == s2: " + (s1 == s2));
+
+        System.out.println("s1.hashCode(): " + s1.hashCode());
+        System.out.println("s2.hashCode(): " + s2.hashCode());
+
+        System.out.println("System.identityHashCode(s1): " + System.identityHashCode(s1));
+        System.out.println("System.identityHashCode(s2): " + System.identityHashCode(s2));
+    }
+}
+
+🧠 Expected Output (approx)
+s1.equals(s2): true
+s1 == s2: false
+s1.hashCode(): 2301506
+s2.hashCode(): 2301506
+System.identityHashCode(s1): 1836019240
+System.identityHashCode(s2): 1028566121
+
+🔍 Explanation (how to say it in an interview)
+
+✅ s1.equals(s2) → true
+Because both strings have the same content (“Java”). The String class overrides equals() to compare content.
+
+✅ s1 == s2 → false
+Because they are two different objects in memory (new String("Java") creates separate instances).
+
+✅ s1.hashCode() and s2.hashCode() → same
+Because the String class overrides hashCode() to return a value based on the string’s content.
+Even though they’re different objects, their contents are the same, so hash codes are identical.
+
+✅ System.identityHashCode(s1) and System.identityHashCode(s2) → different
+Because this method ignores overrides and returns a hash code based on the object’s identity (like its memory reference).
+It’s what you’d get if hashCode() were not overridden.
+
+🗣️ How to Answer in an Interview
+
+Here’s a strong, concise way to phrase it:
+
+“The hashCode() method can be overridden to provide a logical hash code — usually based on an object’s content.
+But System.identityHashCode() always returns the hash code based on the object’s identity, as if Object.hashCode() were used directly.
+So if a class overrides hashCode(), both methods may return different values for the same object.”
+
+Then you can add:
+
+“For example, two different String objects with the same value have equal hashCode() but different System.identityHashCode() values.”
+
+⚙️ Real-World Application
+
+hashCode() → Used by HashMap, HashSet, etc., to find buckets based on object content.
+System.identityHashCode() → Used by IdentityHashMap, which compares object references, not content.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+💡 Interview Follow-up Question
+
+Q: What’s the difference between HashMap and IdentityHashMap in Java?
+Can you show with an example how hashCode() and System.identityHashCode() behave differently in them?
+
+🧩 Example Code
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+
+public class IdentityHashCodeDemo {
+    public static void main(String[] args) {
+        String key1 = new String("Java");
+        String key2 = new String("Java");
+
+        // Using HashMap (uses equals() and hashCode())
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(key1, "HashMap Value 1");
+        hashMap.put(key2, "HashMap Value 2");
+
+        // Using IdentityHashMap (uses == and System.identityHashCode())
+        IdentityHashMap<String, String> identityMap = new IdentityHashMap<>();
+        identityMap.put(key1, "IdentityMap Value 1");
+        identityMap.put(key2, "IdentityMap Value 2");
+
+        System.out.println("HashMap size: " + hashMap.size());
+        System.out.println("HashMap content: " + hashMap);
+
+        System.out.println("IdentityHashMap size: " + identityMap.size());
+        System.out.println("IdentityHashMap content: " + identityMap);
+    }
+}
+
+🧠 Expected Output
+HashMap size: 1
+HashMap content: {Java=HashMap Value 2}
+
+IdentityHashMap size: 2
+IdentityHashMap content: {Java=IdentityMap Value 1, Java=IdentityMap Value 2}
+
+🔍 Explanation (how to explain in the interview)
+1.✅ HashMap
+-------------------------
+Q1).Uses equals() and hashCode() for key comparison.
+=>
+Since key1 and key2 are different objects but equal in content,
+equals() returns true and their hashCode() values are the same.
+
+Therefore, HashMap treats them as the same key → second value overwrites the first one.
+Hence, size = 1.
+
+2.✅ IdentityHashMap
+-------------------------------
+Q2.Uses reference equality (==) instead of equals().
+=>
+Uses System.identityHashCode() instead of overridden hashCode().
+key1 and key2 are different objects, so they’re treated as different keys.
+
+Therefore, both entries are stored → size = 2.
+
+🗣️ How to Answer This in an Interview
+=>
+Here’s a strong, clear way to respond:
+----------------
+“HashMap uses equals() and hashCode() to compare keys, so it treats two objects with the same content as the same key.
+But IdentityHashMap uses == and System.identityHashCode(), meaning it compares keys by their reference, not content.
+So two distinct String objects with the same text will be treated as different keys in an IdentityHashMap.”
+
+Then you can add:
+
+“In other words, IdentityHashMap is useful when you want to distinguish between different object instances, even if they look the same logically.”
+
+⚙️ Summary Table
+Feature	                HashMap	                            IdentityHashMap
+--------------------------------------------------------------------------------------------------
+Key comparison	        equals()	                        ==
+Hash function	        hashCode()	                        System.identityHashCode()
+Key uniqueness	        Based on content	                Based on object identity
+Common use	            Regular maps (content-based keys)	Object identity tracking, caching, frameworks
+-----------------------------------------------------------------------------------------------------------------
