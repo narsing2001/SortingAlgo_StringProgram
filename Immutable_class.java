@@ -1,3 +1,26 @@
+/*
+Q1.Immutable Class Rules
+=>
+1.final class → cannot be subclassed.
+2.private final fields → cannot change after initialization.
+3.Initialize all fields via constructor.
+4.No setters → only getters.
+5.For mutable fields, return defensive copies.
+6.Methods should not modify state.
+
+2.equals() and hashCode()
+=>
+-Base them on the values of fields.
+-Safe for hash-based collections because immutable objects never change, so hashCode is stable.
+
+Q3.Garbage Collection (GC) Benefits
+=>
+Safe to share across threads → less object churn.
+Can cache/reuse objects → reduces GC pressure.
+Fewer accidental references → less memory leak risk.
+
+*/
+
 final class Employee {
     private final int id;
     private final String name;
