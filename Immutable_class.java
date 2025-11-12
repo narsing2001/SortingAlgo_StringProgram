@@ -20,7 +20,7 @@ Can cache/reuse objects → reduces GC pressure.
 Fewer accidental references → less memory leak risk.
 
 */
-
+import java.util.Objects;
 final class Employee {
     private final int id;
     private final String name;
@@ -49,6 +49,11 @@ final class Employee {
     // Returns a new Employee object with updated name
     public Employee updateName(String newName) {
         return new Employee(this.id, newName);
+    }
+	
+	      @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
 
@@ -83,6 +88,9 @@ public class Immutable_class {
 	   System.out.println("value with the modified refernce:-------------------------")
 	      System.out.println("ID: " + a1.getId());
         System.out.println("Name: " + a1.getName());
+		System.out.println("new refernce hashcode of the content"+a1.hashCode());             // Uses overridden hashCode()
+        System.out.println("hashcode of the a1 refernces:"+System.identityHashCode(a1)); // JVM’s default hashCode for reference
+
 		
 		System.out.println("value with the original refernce:---------------------");
         System.out.println("ID: " + e1.getId());
@@ -164,4 +172,52 @@ Name: Patil
 value with the original refernce:
 ID: 101
 Name: Narsing
+
+Important::=======================================================================================================================================
+1️.Default hashCode() behavior
+=.
+-Every class in Java implicitly extends Object.
+-Object has a hashCode() method.
+
+-Default hashCode() in Object: public native int hashCode();
+-This returns a number derived from the object’s memory address (or an internal reference identity).
+-So if you don’t override hashCode(), it does not use your fields at all.
+
+2.Effect on references
+Employee e1 = new Employee(101, "Narsing");
+Employee e2 = new Employee(101, "Narsing");
+
+System.out.println(e1.hashCode()); // default Object.hashCode()
+System.out.println(e2.hashCode());
+System.out.println(e1 == e2);      // false, different references
+
+
+e1.hashCode() and e2.hashCode() will likely be different, even though the content is the same.
+
+== checks reference equality, not content.
+
+3️.Why we override hashCode()
+=>
+-Collections like HashMap, HashSet, HashTable use hashCode() to find objects.
+-If you don’t override it for a class with meaningful fields:
+
+Employee e1 = new Employee(101, "Narsing");
+Employee e2 = new Employee(101, "Narsing");
+
+HashSet<Employee> set = new HashSet<>();
+set.add(e1);
+set.add(e2);
+
+System.out.println(set.size()); // 2, because default hashCode differs
+Even though content is the same, both objects are considered different.
+By overriding hashCode() using the fields, you ensure content-based equality works with hash-based collections.
+
+4️.Quick summary
+Case	hashCode() used	Result
+Not overridden	Object’s default	Based on memory address/reference
+Overridden	Custom (e.g., Objects.hash(id, name))	Based on fields/content
+
+✅ Important note:
+System.identityHashCode(obj) always returns the default JVM hash (reference-based), even if hashCode() is overridden.
+
 */
